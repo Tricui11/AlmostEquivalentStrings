@@ -1,6 +1,8 @@
 #include "dialog.h"
 #include "ui_dialog.h"
-#include "stringsolver.cpp"
+#include "basestringsolver.h"
+#include "subsequencesolver.cpp"
+#include "substringsolver.cpp"
 
 Dialog::Dialog(QWidget *parent)
     : QDialog(parent)
@@ -58,18 +60,31 @@ void heapSort(char *arr, int n) {
 
 void Dialog::on_pushButton_clicked()
 {
-    StringSolver *solver = new StringSolver();
-    char p[] = " 243517698";
-//    char t[] = " republican";  максимальная монотонная подпоследовательность
 
 
-    int n = sizeof(p) / sizeof(p[0]) - 1;
+    QString sourceString = ' ' + ui->textEdit_SourceString->toPlainText();
+    QByteArray sourceStringAs8Bit = sourceString.toLocal8Bit();
+    int sourceSize = sourceStringAs8Bit.size() + 1;
+    char sourceCharArray[sourceSize];
+    qstrcpy(sourceCharArray, sourceStringAs8Bit.data());
+
+    QString targetString = ' ' + ui->textEdit_TargetString->toPlainText();
+    QByteArray targetStringAs8Bit = targetString.toLocal8Bit();
+    int targetSize = targetStringAs8Bit.size() + 1;
+    char targetCharArray[targetSize];
+    qstrcpy(targetCharArray, targetStringAs8Bit.data());
+
+    //максимальная монотонная подпоследовательность
+    int n = sizeof(sourceCharArray)/sizeof(sourceCharArray[0]) - 1;
     char t[n];
     for (int i = 0; i < n; i++) {
-        t[i] = p[i];
+        t[i] = sourceCharArray[i];
     }
     heapSort(t, n);
 
-    int res2 = solver->string_compare(p, t);
+
+    SubStringSolver *solver = new SubStringSolver();
+    QString res = solver->string_compare(sourceCharArray, t);
+    ui->textEdit_Output->setText(res);
 }
 
