@@ -30,7 +30,7 @@ QString BaseStringSolver::string_compare(char *s, char *t, int sLen, int tLen)
             }
         }
     }
-    goal_cell(s, t, &i, &j, sLen, tLen);
+    goal_cell(&i, &j, sLen, tLen);
     reconstruct_path(s, t, i, j);
 
     QString result;
@@ -48,19 +48,17 @@ int BaseStringSolver::match(char c, char d)
 
 void BaseStringSolver::row_init(int i)
 {
-    m[0][i].cost = i;
-    if (i>0) m[0][i].parent = INSERT;
-    else m[0][i].parent = -1;
+    m[0][i].cost = i;    
+    m[0][i].parent = i>0 ? INSERT : -1;
 }
 
 void BaseStringSolver::column_init(int i)
 {
     m[i][0].cost = i;
-    if (i>0) m[i][0].parent = DELETE;
-    else m[i][0].parent = -1;
+    m[i][0].parent = i>0 ? DELETE : -1;
 }
 
-void BaseStringSolver::goal_cell(char *s, char *t, int *i, int*j, int sLen, int tLen)
+void BaseStringSolver::goal_cell(int *i, int*j, int sLen, int tLen)
 {
     *i = sLen - 1;
     *j = tLen - 1;
@@ -68,20 +66,20 @@ void BaseStringSolver::goal_cell(char *s, char *t, int *i, int*j, int sLen, int 
 
 void BaseStringSolver::reconstruct_path(char *s, char *t, int i, int j)
 {
-    if (m[i][j].parent == -1 ) return;
-    if (m[i][j].parent == MATCH)
+    if (m[i][j].parent == -1 ) { return; }
+    else if (m[i][j].parent == MATCH)
     {
         reconstruct_path(s, t, i-1, j-1);
         match_out(s, t, i, j);
         return;
     }
-    if (m[i][j].parent == INSERT)
+    else if (m[i][j].parent == INSERT)
     {
         reconstruct_path(s, t, i, j-1);
         insert_out(t, j);
         return;
     }
-    if (m[i][j].parent == DELETE)
+    else if (m[i][j].parent == DELETE)
     {
         reconstruct_path(s, t, i-1, j);
         delete_out(s, i);

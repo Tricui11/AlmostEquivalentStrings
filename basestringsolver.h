@@ -19,6 +19,8 @@ public:
     vector<string> res;
     int countOffset;
 
+    virtual ~BaseStringSolver() {}
+
     QString string_compare(char *s, char *t, int sLen, int tLen);
 
     virtual void row_init(int i);
@@ -27,7 +29,7 @@ public:
 
     virtual int match(char c, char d);
 
-    virtual void goal_cell(char *s, char *t, int *i, int*j, int sLen, int tLen);
+    virtual void goal_cell(int *i, int*j, int sLen, int tLen);
 
     void reconstruct_path(char *s, char *t, int i, int j);
 

@@ -11,11 +11,15 @@ CONFIG += c++17
 SOURCES += \
     arrayhelper.cpp \
     basestringsolver.cpp \
+    basestringsolvercreator.cpp \
     cell.cpp \
     main.cpp \
     dialog.cpp \
+    solvercreator.cpp \
     subsequencesolver.cpp \
-    substringsolver.cpp
+    subsequencesolvercreator.cpp \
+    substringsolver.cpp \
+    substringsolvercreator.cpp
 
 HEADERS += \
     basestringsolver.h \

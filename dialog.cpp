@@ -1,5 +1,9 @@
 #include "dialog.h"
 #include "ui_dialog.h"
+#include <solvercreator.cpp>
+#include <basestringsolvercreator.cpp>
+#include <substringsolvercreator.cpp>
+#include <subsequencesolvercreator.cpp>
 
 Dialog::Dialog(QWidget *parent)
     : QDialog(parent)
@@ -11,17 +15,35 @@ Dialog::Dialog(QWidget *parent)
 Dialog::~Dialog()
 {
     delete ui;
-    if (solver != nullptr)
-    {
-        delete solver;
-    }
-    if (arrayHelper != nullptr)
-    {
-        delete arrayHelper;
-    }
 }
 
-void Dialog::on_pushButton_clicked()
+void Dialog::on_pushButtonCompareStrings_clicked()
+{
+    SolverCreator *creator = new BaseStringSolverCreator();
+    SolveAndOutput(creator);
+}
+
+void Dialog::on_pushButton_FindSubstring_clicked()
+{
+    SolverCreator *creator = new SubStringSolverCreator();
+    SolveAndOutput(creator);
+}
+
+
+void Dialog::on_pushButton_LongestCommonSubsequence_clicked()
+{
+    SolverCreator *creator = new SubsequenceSolverCreator();
+    SolveAndOutput(creator);
+}
+
+
+void Dialog::on_pushButton_MaximumMonotonicSubsequence_clicked()
+{
+    SolverCreator *creator = new SubsequenceSolverCreator();
+    SolveAndOutput(creator, true);
+}
+
+void Dialog::SolveAndOutput(SolverCreator *creator, bool isTargetArrayFromSource)
 {
     QString sourceString = ' ' + ui->textEdit_SourceString->toPlainText();
     QByteArray sourceStringAs8Bit = sourceString.toLocal8Bit();
@@ -29,28 +51,32 @@ void Dialog::on_pushButton_clicked()
     char sourceCharArray[sourceSize];
     qstrcpy(sourceCharArray, sourceStringAs8Bit.data());
 
-    QString targetString = ' ' + ui->textEdit_TargetString->toPlainText();
-    QByteArray targetStringAs8Bit = targetString.toLocal8Bit();
-    int targetSize = targetStringAs8Bit.size();
-    char targetCharArray[targetSize];
-    qstrcpy(targetCharArray, targetStringAs8Bit.data());
-
-    //максимальная монотонная подпоследовательность
-    char t[sourceSize];
-    for (int i = 0; i < sourceSize; i++) {
-        t[i] = sourceCharArray[i];
-    }
-    if (arrayHelper == nullptr)
+    int targetSize;
+    char *targetCharArray;
+    if (isTargetArrayFromSource)
     {
-        arrayHelper = new ArrayHelper();
+        targetCharArray = new char[sourceSize];
+        for (int i = 0; i < sourceSize; i++)
+        {
+            targetCharArray[i] = sourceCharArray[i];
+        }
+        ArrayHelper *arrayHelper = new ArrayHelper();
+        arrayHelper->heapSort(targetCharArray, sourceSize);
+        targetSize = sourceSize;
+        delete arrayHelper;
     }
-    arrayHelper->heapSort(t, sourceSize);
-
-    if (solver == nullptr)
+    else
     {
-        solver = new SubsequenceSolver();
+        QString targetString = ' ' + ui->textEdit_TargetString->toPlainText();
+        QByteArray targetStringAs8Bit = targetString.toLocal8Bit();
+        targetSize = targetStringAs8Bit.size();
+        targetCharArray = new char[targetSize];
+        qstrcpy(targetCharArray, targetStringAs8Bit.data());
     }
-   // QString res = solver->string_compare(sourceCharArray, targetCharArray, sourceSize, targetSize);
-    QString res = solver->string_compare(sourceCharArray, t, sourceSize, sourceSize);
+
+    BaseStringSolver *solver = creator->createSolver();
+    QString res = solver->string_compare(sourceCharArray, targetCharArray, sourceSize, targetSize);
     ui->textEdit_Output->setText(res);
+    delete creator;
+    delete solver;
 }

@@ -11,7 +11,7 @@ public:
         m[0][i].parent = -1;
     }
 
-    void goal_cell(char *s, char *t, int *i, int*j, int sLen, int jLen) override
+    void goal_cell(int *i, int*j, int sLen, int jLen) override
     {
         int k;
         *i = sLen - 1;

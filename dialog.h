@@ -2,8 +2,10 @@
 #define DIALOG_H
 
 #include <QDialog>
-#include <subsequencesolver.cpp>
-#include "arrayhelper.cpp"
+#include <QTextEdit>
+#include <basestringsolver.h>
+#include <arrayhelper.cpp>
+#include <solvercreator.cpp>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Dialog; }
@@ -18,11 +20,17 @@ public:
     ~Dialog();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_pushButtonCompareStrings_clicked();
+
+    void on_pushButton_FindSubstring_clicked();
+
+    void on_pushButton_LongestCommonSubsequence_clicked();
+
+    void on_pushButton_MaximumMonotonicSubsequence_clicked();
 
 private:
     Ui::Dialog *ui;
-    SubsequenceSolver *solver = nullptr;
-    ArrayHelper *arrayHelper = nullptr;
+
+    void SolveAndOutput(SolverCreator *creator, bool isTargetArrayFromSource = false);
 };
 #endif // DIALOG_H

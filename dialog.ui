@@ -13,17 +13,17 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pushButtonCompareStrings">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>60</x>
      <y>260</y>
-     <width>75</width>
+     <width>111</width>
      <height>24</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Сравнить строки</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="textEdit_SourceString">
@@ -51,9 +51,48 @@
     <rect>
      <x>190</x>
      <y>360</y>
-     <width>401</width>
+     <width>421</width>
      <height>111</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_FindSubstring">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>260</y>
+     <width>131</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Найти подстроку</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LongestCommonSubsequence">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>260</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Самая длинная общая подпоследовательность</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_MaximumMonotonicSubsequence">
+   <property name="geometry">
+    <rect>
+     <x>404</x>
+     <y>310</y>
+     <width>321</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Максимальная монотонная подпоследовательность</string>
    </property>
   </widget>
  </widget>
