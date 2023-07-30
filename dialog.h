@@ -2,6 +2,8 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <subsequencesolver.cpp>
+#include "arrayhelper.cpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Dialog; }
@@ -20,5 +22,7 @@ private slots:
 
 private:
     Ui::Dialog *ui;
+    SubsequenceSolver *solver = nullptr;
+    ArrayHelper *arrayHelper = nullptr;
 };
 #endif // DIALOG_H

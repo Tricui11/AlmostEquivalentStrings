@@ -5,7 +5,7 @@
 #define DELETE 2
 #define MAXLEN 25
 #include <QTextStream>
-#include <cell.h>
+#include <cell.cpp>
 #include <iostream>
 #include <vector>
 
@@ -14,19 +14,18 @@ using namespace std;
 class BaseStringSolver
 {
 public:
-
     Cell m[MAXLEN+1][MAXLEN+1];
-    QString res;
     vector<char> bufResVector;
+    vector<string> res;
     int countOffset;
 
     QString string_compare(char *s, char *t, int sLen, int tLen);
 
-    virtual int match(char c, char d);
-
     virtual void row_init(int i);
 
     void column_init(int i);
+
+    virtual int match(char c, char d);
 
     virtual void goal_cell(char *s, char *t, int *i, int*j, int sLen, int tLen);
 
@@ -37,8 +36,6 @@ public:
     virtual void delete_out(char *s, int i);
 
     virtual void match_out(char *s, char *t, int i, int j);
-
-    void PrintVector(vector<char> charVector);
 };
 
 #endif

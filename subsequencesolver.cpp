@@ -5,6 +5,7 @@ using namespace std;
 class SubsequenceSolver : public BaseStringSolver
 {
 public:
+    virtual ~SubsequenceSolver() {};
 
     int match(char c, char d) override
     {
@@ -23,8 +24,8 @@ public:
     {
         if (s[i] == t[j])
         {
-            res.append(s[i]);
-            res.append(' ');
+            bufResVector.insert(bufResVector.begin() + j, t[j]);
+            res.push_back(string(1, t[j]) + ' ');
         }
     }
 };

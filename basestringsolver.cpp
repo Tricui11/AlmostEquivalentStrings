@@ -5,7 +5,6 @@ QString BaseStringSolver::string_compare(char *s, char *t, int sLen, int tLen)
     int i, j, k;
     int opt[3];
     bufResVector.assign(s, s + sLen);
-    res.clear();
     for(i=0; i<MAXLEN; i++)
     {
         row_init(i);
@@ -34,101 +33,80 @@ QString BaseStringSolver::string_compare(char *s, char *t, int sLen, int tLen)
     goal_cell(s, t, &i, &j, sLen, tLen);
     reconstruct_path(s, t, i, j);
 
-    cout << res.toStdString() << endl;
-
-
-    int sds = m[i][j].cost;
-
-    return res;
+    QString result;
+    for (const auto& str : res)
+    {
+        result.append(QString::fromStdString(str));
+    }
+    return result;
 }
 
+int BaseStringSolver::match(char c, char d)
+{
+    return c == d ? 0 : 1;
+}
 
-   int BaseStringSolver::match(char c, char d)
+void BaseStringSolver::row_init(int i)
+{
+    m[0][i].cost = i;
+    if (i>0) m[0][i].parent = INSERT;
+    else m[0][i].parent = -1;
+}
+
+void BaseStringSolver::column_init(int i)
+{
+    m[i][0].cost = i;
+    if (i>0) m[i][0].parent = DELETE;
+    else m[i][0].parent = -1;
+}
+
+void BaseStringSolver::goal_cell(char *s, char *t, int *i, int*j, int sLen, int tLen)
+{
+    *i = sLen - 1;
+    *j = tLen - 1;
+}
+
+void BaseStringSolver::reconstruct_path(char *s, char *t, int i, int j)
+{
+    if (m[i][j].parent == -1 ) return;
+    if (m[i][j].parent == MATCH)
     {
-        return c == d ? 0 : 1;
+        reconstruct_path(s, t, i-1, j-1);
+        match_out(s, t, i, j);
+        return;
     }
-
-    void BaseStringSolver::row_init(int i)
+    if (m[i][j].parent == INSERT)
     {
-        m[0][i].cost = i;
-        if (i>0) m[0][i].parent = INSERT;
-        else m[0][i].parent = -1;
+        reconstruct_path(s, t, i, j-1);
+        insert_out(t, j);
+        return;
     }
-    void BaseStringSolver::column_init(int i)
+    if (m[i][j].parent == DELETE)
     {
-        m[i][0].cost = i;
-        if (i>0) m[i][0].parent = DELETE;
-        else m[i][0].parent = -1;
+        reconstruct_path(s, t, i-1, j);
+        delete_out(s, i);
+        return;
     }
+}
 
-    void BaseStringSolver::goal_cell(char *s, char *t, int *i, int*j, int sLen, int tLen)
+void BaseStringSolver::insert_out(char *t, int j)
+{
+    countOffset--;
+    bufResVector.insert(bufResVector.begin() + j, t[j]);
+    res.push_back(string(bufResVector.begin(), bufResVector.end()) + '\n');
+}
+
+void BaseStringSolver::delete_out(char *s, int i)
+{
+    bufResVector.erase(bufResVector.begin() + i - countOffset++);
+    res.push_back(string(bufResVector.begin(), bufResVector.end()) + '\n');
+}
+
+void BaseStringSolver::match_out(char *s, char *t, int i, int j)
+{
+    if (s[i] != t[j])
     {
-        *i = sLen - 1;
-        *j = tLen - 1;
+        bufResVector[j] = t[j];
+        res.push_back(string(bufResVector.begin(), bufResVector.end()) + '\n');
     }
-
-    void BaseStringSolver::reconstruct_path(char *s, char *t, int i, int j)
-    {
-        if (m[i][j].parent == -1 ) return;
-        if (m[i][j].parent == MATCH)
-        {
-            reconstruct_path(s, t, i-1, j-1);
-            match_out(s, t, i, j);
-            return;
-        }
-        if (m[i][j].parent == INSERT)
-        {
-            reconstruct_path(s, t, i, j-1);
-            insert_out(t, j);
-            return;
-        }
-        if (m[i][j].parent == DELETE)
-        {
-            reconstruct_path(s, t, i-1, j);
-            delete_out(s, i);
-            return;
-        }
-    }
-
-    void BaseStringSolver::insert_out(char *t, int j)
-    {
-        res.append("I");
-
-
-
-        bufResVector.insert(bufResVector.begin() + j, t[j]);
-        countOffset--;
-        PrintVector(bufResVector);
-    }
-
-    void BaseStringSolver::delete_out(char *s, int i)
-    {
-        res.append("D");
-
-        bufResVector.erase(bufResVector.begin() + i - countOffset++);
-        PrintVector(bufResVector);
-    }
-
-    void BaseStringSolver::match_out(char *s, char *t, int i, int j)
-    {
-        if (s[i] != t[j])
-        {
-            res.append("S");
-
-            bufResVector[j] = t[j];
-            PrintVector(bufResVector);
-        }
-        else
-        {
-            res.append("M");
-        }
-    }
-
-    void BaseStringSolver::PrintVector(vector<char> charVector)
-    {
-        for (char ch : charVector) {
-            std::cout << ch;
-        }
-        std::cout << std::endl;
-    }
-
+}
