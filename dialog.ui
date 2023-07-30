@@ -130,7 +130,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Сравнить строки</string>
+       <string>Compare strings</string>
       </property>
      </widget>
     </item>
@@ -143,7 +143,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Найти подстроку</string>
+       <string>Find substring</string>
       </property>
      </widget>
     </item>
@@ -156,8 +156,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Самая длинная
-общая подпоследовательность</string>
+       <string>Longest common subsequence</string>
       </property>
      </widget>
     </item>
@@ -170,8 +169,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Максимальная монотонная
-подпоследовательность</string>
+       <string>Maximum monotonic subsequence</string>
       </property>
      </widget>
     </item>
