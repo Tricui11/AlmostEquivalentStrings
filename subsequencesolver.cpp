@@ -6,23 +6,25 @@ class SubsequenceSolver : public BaseStringSolver
 {
 public:
 
-    void row_init(int i) override
+    int match(char c, char d) override
     {
-        m[0][i].cost = 0;
-        m[0][i].parent = -1;
+        return c == d ? 0 : MAXLEN;
     }
 
-    void goal_cell(char *s, char *t, int *i, int*j) override
+    void insert_out(char *t, int j) override
     {
-        int k;
-        *i = strlen(s) - 1;
-        *j = 0;
-        for(k = 0; k < strlen(t); k++)
+    }
+
+    void delete_out(char *s, int i) override
+    {
+    }
+
+    void match_out(char *s, char *t, int i, int j) override
+    {
+        if (s[i] == t[j])
         {
-            if (m[*i][k].cost < m[*i][*j].cost)
-            {
-                *j = k;
-            }
+            res.append(s[i]);
+            res.append(' ');
         }
     }
 };

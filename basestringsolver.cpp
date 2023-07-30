@@ -1,11 +1,10 @@
 #include "basestringsolver.h"
 
-using namespace std;
-
-QString BaseStringSolver::string_compare(char *s, char *t)
+QString BaseStringSolver::string_compare(char *s, char *t, int sLen, int tLen)
 {
     int i, j, k;
     int opt[3];
+    bufResVector.assign(s, s + sLen);
     res.clear();
     for(i=0; i<MAXLEN; i++)
     {
@@ -13,9 +12,9 @@ QString BaseStringSolver::string_compare(char *s, char *t)
         column_init(i);
     }
 
-    for(i=1; i<strlen(s); i++)
+    for(i=1; i<sLen; i++)
     {
-        for(j=1; j<strlen(t); j++)
+        for(j=1; j<tLen; j++)
         {
             opt[MATCH] = m[i-1][j-1].cost + match(s[i], t[j]);
             opt[INSERT] = m[i][j-1].cost + 1;
@@ -32,10 +31,13 @@ QString BaseStringSolver::string_compare(char *s, char *t)
             }
         }
     }
-    goal_cell(s, t, &i, &j);
+    goal_cell(s, t, &i, &j, sLen, tLen);
     reconstruct_path(s, t, i, j);
 
     cout << res.toStdString() << endl;
+
+
+    int sds = m[i][j].cost;
 
     return res;
 }
@@ -59,10 +61,10 @@ QString BaseStringSolver::string_compare(char *s, char *t)
         else m[i][0].parent = -1;
     }
 
-    void BaseStringSolver::goal_cell(char *s, char *t, int *i, int*j)
+    void BaseStringSolver::goal_cell(char *s, char *t, int *i, int*j, int sLen, int tLen)
     {
-        *i = strlen(s) - 1;
-        *j = strlen(t) - 1;
+        *i = sLen - 1;
+        *j = tLen - 1;
     }
 
     void BaseStringSolver::reconstruct_path(char *s, char *t, int i, int j)
@@ -92,18 +94,19 @@ QString BaseStringSolver::string_compare(char *s, char *t)
     {
         res.append("I");
 
-//        res.append("Insert symbol %1 at %2");
-//        res.append('\n');
-//        res = res.arg(t[j]).arg(j);
+
+
+        bufResVector.insert(bufResVector.begin() + j, t[j]);
+        countOffset--;
+        PrintVector(bufResVector);
     }
 
     void BaseStringSolver::delete_out(char *s, int i)
     {
         res.append("D");
 
-//        res.append("Delete symbol %1 at %2");
-//        res.append('\n');
-//        res = res.arg(s[i-1]).arg(i);
+        bufResVector.erase(bufResVector.begin() + i - countOffset++);
+        PrintVector(bufResVector);
     }
 
     void BaseStringSolver::match_out(char *s, char *t, int i, int j)
@@ -112,13 +115,20 @@ QString BaseStringSolver::string_compare(char *s, char *t)
         {
             res.append("S");
 
-//            res.append("Changel symbol %1 to %2 at %3");
-//            res.append('\n');
-//            res = res.arg(s[i-1]).arg(t[i-1]).arg(i);
+            bufResVector[j] = t[j];
+            PrintVector(bufResVector);
         }
         else
         {
             res.append("M");
         }
+    }
+
+    void BaseStringSolver::PrintVector(vector<char> charVector)
+    {
+        for (char ch : charVector) {
+            std::cout << ch;
+        }
+        std::cout << std::endl;
     }
 
