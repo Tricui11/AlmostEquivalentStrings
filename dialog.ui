@@ -38,6 +38,7 @@
    <property name="font">
     <font>
      <pointsize>12</pointsize>
+     <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
@@ -51,7 +52,7 @@
      <x>20</x>
      <y>20</y>
      <width>731</width>
-     <height>103</height>
+     <height>120</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -62,6 +63,7 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -89,6 +91,7 @@
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -113,8 +116,8 @@
     <rect>
      <x>70</x>
      <y>150</y>
-     <width>630</width>
-     <height>46</height>
+     <width>679</width>
+     <height>54</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -148,7 +151,7 @@
      <widget class="QPushButton" name="pushButton_LongestCommonSubsequence">
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
+        <pointsize>9</pointsize>
         <italic>true</italic>
        </font>
       </property>
@@ -162,7 +165,7 @@
      <widget class="QPushButton" name="pushButton_MaximumMonotonicSubsequence">
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
+        <pointsize>9</pointsize>
         <italic>true</italic>
        </font>
       </property>
