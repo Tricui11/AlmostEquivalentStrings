@@ -10,6 +10,7 @@ Dialog::Dialog(QWidget *parent)
     , ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+    this->setWindowTitle("AlmostEquivalentStrings");
 }
 
 Dialog::~Dialog()
@@ -46,10 +47,10 @@ void Dialog::on_pushButton_MaximumMonotonicSubsequence_clicked()
 void Dialog::SolveAndOutput(SolverCreator *creator, bool isTargetArrayFromSource)
 {
     QString sourceString = ' ' + ui->textEdit_SourceString->toPlainText();
-    QByteArray sourceStringAs8Bit = sourceString.toLocal8Bit();
-    int sourceSize = sourceStringAs8Bit.size();
-    char sourceCharArray[sourceSize];
-    qstrcpy(sourceCharArray, sourceStringAs8Bit.data());
+    QByteArray sourceStringAsUtf8 = sourceString.toUtf8();
+    int sourceSize = sourceString.size();
+    char *sourceCharArray = new char[sourceSize];
+    qstrcpy(sourceCharArray, sourceStringAsUtf8.data());
 
     int targetSize;
     char *targetCharArray;
@@ -68,10 +69,10 @@ void Dialog::SolveAndOutput(SolverCreator *creator, bool isTargetArrayFromSource
     else
     {
         QString targetString = ' ' + ui->textEdit_TargetString->toPlainText();
-        QByteArray targetStringAs8Bit = targetString.toLocal8Bit();
-        targetSize = targetStringAs8Bit.size();
+        QByteArray targetStringAsUtf8 = targetString.toUtf8();
+        targetSize = targetString.size();
         targetCharArray = new char[targetSize];
-        qstrcpy(targetCharArray, targetStringAs8Bit.data());
+        qstrcpy(targetCharArray, targetStringAsUtf8.data());
     }
 
     BaseStringSolver *solver = creator->createSolver();
